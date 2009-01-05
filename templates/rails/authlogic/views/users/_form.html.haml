@@ -1,0 +1,12 @@
+%li
+  = form.label :login
+%li  
+  = form.text_field :login
+%li
+  = form.label :password, form.object.new_record? ? nil : "Change password"
+%li  
+  = form.password_field :password
+%li
+  = form.label :password_confirmation
+%li
+  = form.password_field :password_confirmation

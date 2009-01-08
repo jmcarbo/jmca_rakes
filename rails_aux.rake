@@ -85,7 +85,7 @@ namespace :rails_aux do
 	task :fckeditor_init do
 		application_name = ENV['app'] || "railsapplication"
 	  
-	  %x{ cd "#{application_name}"; rake fckeditor }
+	  %x{ cd "#{application_name}"; rake fckeditor:install  }
 	end
 
 	desc "rjs_behaviours init"
@@ -118,7 +118,7 @@ class BehavioursController < ApplicationController
   end
 end
 END
-		File.open(application_name + "/app/controllers/behaviours_controller.rb").write(template_behaviour_controller)
+		File.open(application_name + "/app/controllers/behaviours_controller.rb","w").write(template_behaviour_controller)
 	end
 	
 	desc "Userstamp plugin Initialize "

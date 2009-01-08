@@ -60,6 +60,7 @@ namespace :rails_aux do
 #		install_plugin(applicationName, "git://github.com/linkingpaths/acts_as_scribe.git")
 		install_plugin(applicationName, "git://github.com/simonmenke/rjs_behaviors.git")
 		install_plugin(applicationName, "git://github.com/rails/auto_complete.git")
+		install_plugin(applicationName, "git://github.com/gramos/easy-fckeditor.git")
 		
 		patch_file(applicationName + "/config/environment.rb",/(^.*# config.gem)/, lambda { |match| "  config.gem \"authlogic\"\n#{match[1]}" })		
 		patch_file(applicationName + "/config/environment.rb",/(^.*# config.gem)/, lambda { |match| "  config.gem \"searchlogic\"\n#{match[1]}" })
@@ -76,8 +77,17 @@ namespace :rails_aux do
 		Rake::Task[ "rails_aux:git_conditioning" ].execute		
 		Rake::Task[ "rails_aux:userstamp_init" ].execute
 		Rake::Task[ "rails_aux:rjs_behaviours_init" ].execute
+		Rake::Task[ "rails_aux:fckeditor_init" ].execute
+
 	end
 	
+	desc "fckeditor_ init"
+	task :fckeditor_init do
+		application_name = ENV['app'] || "railsapplication"
+	  
+	  %x{ cd "#{application_name}"; rake fckeditor }
+	end
+
 	desc "rjs_behaviours init"
 	task :rjs_behaviours_init do
 		application_name = ENV['app'] || "railsapplication"

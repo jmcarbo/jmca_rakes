@@ -1,20 +1,20 @@
 %h1 Login
 
-%ul
+%p
   - form_for @user_session, :url => user_session_path do |f|
-    %li 
+    %br 
       = f.error_messages
-    %li 
-      = f.label :login
-    %li 
-      = f.text_field :login
-    %li 
+    %br 
+      = f.label :email
+    %br 
+      = f.text_field :email
+    %br 
       = f.label :password
-    %li 
+    %br 
       = f.password_field :password
-    %li 
+    %br 
       = f.check_box :remember_me
-    %li 
+    %br 
       = f.label :remember_me
-    %li 
+    %br 
       = f.submit "Login"

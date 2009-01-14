@@ -65,7 +65,8 @@ namespace :rails_aux do
 		patch_file(applicationName + "/config/environment.rb",/(^.*# config.gem)/, lambda { |match| "  config.gem \"authlogic\"\n#{match[1]}" })		
 		patch_file(applicationName + "/config/environment.rb",/(^.*# config.gem)/, lambda { |match| "  config.gem \"searchlogic\"\n#{match[1]}" })
 		patch_file(applicationName + "/config/environment.rb",/(^.*# config.gem)/, lambda { |match| "  config.gem \"paginator\"\n#{match[1]}" })
-		
+		patch_file(applicationName + "/config/environment.rb",/(^.*# config.gem)/, lambda { |match| "  config.gem \"calendar_date_select\"\n#{match[1]}" })
+
 		apply_theme(applicationName, "web20")
 		
 		#remove default index file
@@ -252,7 +253,7 @@ END
 		FileUtils.cp File.expand_path(RAILS_TEMPLATES_DIR + "/authlogic/user_sessions_controller.rb"), application_name + "/app/controllers/user_sessions_controller.rb"
 	  FileUtils.cp File.expand_path(RAILS_TEMPLATES_DIR + "/authlogic/users_controller.rb"), application_name + "/app/controllers/users_controller.rb"
 
-		%x{ cd "#{application_name}"; script/generate model user login:string crypted_password:string \
+		%x{ cd "#{application_name}"; script/generate model user email:string crypted_password:string \
 		  password_salt:string persistence_token:string login_count:integer last_request_at:datetime last_login_at:datetime \
 		  current_login_at:datetime last_login_ip:string current_login_ip:string
 		}

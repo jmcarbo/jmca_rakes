@@ -1,10 +1,10 @@
 %h1 Register
 
-%ul 
+%p
   - form_for @user, :url => account_path do |f| 
-    %li
+    %br
       = f.error_messages
-    %li
+    %br
       = render :partial => "form", :object => f 
-    %li
+    %br
       = f.submit "Register"

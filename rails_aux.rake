@@ -79,6 +79,7 @@ namespace :rails_aux do
 		Rake::Task[ "rails_aux:rjs_behaviours_init" ].execute
 		Rake::Task[ "rails_aux:fckeditor_init" ].execute
 
+		
 	end
 	
 	desc "fckeditor_ init"
@@ -153,8 +154,8 @@ class AddUserstampsToUser < ActiveRecord::Migration
   end
 end
 END
-		File.open(application_name + "/db/migrate/" +Time.now.strftime("%Y%m%d%H%M%S")+"_add_userstamps_to_user.rb","w").write(migration_template)
-		%x{ cd "#{application_name}"; rake db:migrate }
+		File.open(application_name + "/db/migrate/" +Time.now.utc.strftime("%Y%m%d%H%M%S")+"_add_userstamps_to_user.rb","w").write(migration_template)
+
 	end
 
 	desc "Authorization plugin initialization"

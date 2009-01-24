@@ -51,7 +51,7 @@ namespace :rails_aux do
 		install_plugin(applicationName, "git://github.com/technoweenie/attachment_fu.git")
 		install_plugin(applicationName, "git://github.com/mattetti/acts_as_taggable_on_steroids.git")
 		install_plugin(applicationName, "git://github.com/cainlevy/recordselect.git")
-		install_plugin(applicationName, "git://github.com/activescaffold/active_scaffold.git")
+#		install_plugin(applicationName, "git://github.com/activescaffold/active_scaffold.git")
 		install_plugin(applicationName, "git://github.com/delynn/userstamp.git")
  	  install_plugin(applicationName, "git://github.com/collectiveidea/awesome_nested_set.git")
 		install_plugin(applicationName, "git://github.com/rails/acts_as_tree.git")
@@ -61,11 +61,15 @@ namespace :rails_aux do
 		install_plugin(applicationName, "git://github.com/simonmenke/rjs_behaviors.git")
 		install_plugin(applicationName, "git://github.com/rails/auto_complete.git")
 		install_plugin(applicationName, "git://github.com/gramos/easy-fckeditor.git")
+		install_plugin(applicationName, "git://github.com/martinrehfeld/ext_scaffold.git")
+		
 		
 		patch_file(applicationName + "/config/environment.rb",/(^.*# config.gem)/, lambda { |match| "  config.gem \"authlogic\"\n#{match[1]}" })		
 		patch_file(applicationName + "/config/environment.rb",/(^.*# config.gem)/, lambda { |match| "  config.gem \"searchlogic\"\n#{match[1]}" })
 		patch_file(applicationName + "/config/environment.rb",/(^.*# config.gem)/, lambda { |match| "  config.gem \"paginator\"\n#{match[1]}" })
 		patch_file(applicationName + "/config/environment.rb",/(^.*# config.gem)/, lambda { |match| "  config.gem \"calendar_date_select\"\n#{match[1]}" })
+		patch_file(applicationName + "/config/environment.rb",/(^.*# config.gem)/, lambda { |match| "  config.gem \"liquid\"\n#{match[1]}" })
+		patch_file(applicationName + "/config/environment.rb",/(^.*# config.gem)/, lambda { |match| "  config.gem \"maruku\"\n#{match[1]}" })
 
 		apply_theme(applicationName, "web20")
 		
@@ -74,13 +78,21 @@ namespace :rails_aux do
 		
 		Rake::Task[ "rails_aux:authlogic_init" ].execute
 		Rake::Task[ "rails_aux:acts_as_taggable_init" ].execute
+		
 		Rake::Task[ "rails_aux:authorization_plugin_init" ].execute
 		Rake::Task[ "rails_aux:git_conditioning" ].execute		
 		Rake::Task[ "rails_aux:userstamp_init" ].execute
 		Rake::Task[ "rails_aux:rjs_behaviours_init" ].execute
 		Rake::Task[ "rails_aux:fckeditor_init" ].execute
+		Rake::Task[ "rails_aux:extjs_init" ].execute
 
 		
+	end
+
+	desc "install extjs"
+	task :extjs_init do
+		application_name = ENV['app'] || "railsapplication"
+		%x{ cd "#{application_name}/public"; wget http://extjs.com/deploy/ext-2.2.zip;unzip ext-2.2.zip;mv ext-2.2 ext  }
 	end
 	
 	desc "fckeditor_ init"
@@ -205,9 +217,12 @@ MODEL
 			
 		# Patch pluralization error
 
+		begin
 		FileUtils.mv application_name  + "/app/models/role_user.rb", 
 			application_name  + "/app/models/roles_user.rb"
-
+		rescue
+		end
+		
 		patch_file(application_name + "/app/models/roles_user.rb", 
 			/^(class RoleUser < ActiveRecord::Base)$/,
 			lambda { |match| "class RolesUser < ActiveRecord::Base\n"}
@@ -240,7 +255,7 @@ END
 			/^(module ApplicationHelper)$/,
 			lambda { |match| "#{match[1]}\n  include TagsHelper\n"}
 			)		
-		
+		%x{ cd "#{application_name}"; rake db:migrate }
 	end
 	
 	desc "Authlogic plugin initialization"
